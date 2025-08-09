@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=manhuadb
+      - POSTGRES_USER=manhua
+      - POSTGRES_PASSWORD=manhua_pass
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U manhua -d manhuadb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build: ./api
+    environment:
+      - TZ=UTC
+      - DATABASE_URL=postgresql+psycopg2://manhua:manhua_pass@db:5432/manhuadb
+      - DOWNLOAD_DIR=/downloads
+      - COMICK_API_ENABLED=true
+      - CORS_ORIGINS=*
+      - API_KEY=changeme
+      - JOBS_ENABLED=true
+      - JOB_INTERVAL_MINUTES=60
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./downloads:/downloads
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    environment:
+      - VITE_API_BASE=http://localhost:8000
+    ports:
+      - "8085:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  db_data:
