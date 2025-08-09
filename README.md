@@ -6,8 +6,12 @@
 - Docker Compose stack (db/api/web)
 - API and web images pulled from GitHub Container Registry
 
+- Web UI styling inspired by the Overseerr project
+`
+Compose pulls `ghcr.io/Njordyy/manhuaseerr-api:main` and `ghcr.io/Njordyy/manhuaseerr-web:main` (images use `pull_policy: always`). Authenticate to private GitHub packages with:
 
 Open http://localhost:8085 (set API key input to match `API_KEY` env). Downloads are persisted in a named volume (`downloads_data`).
+The web container talks to the API at `http://api:8000` via `VITE_API_BASE`.
 
 
 ## ENV

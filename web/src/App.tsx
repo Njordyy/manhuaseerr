@@ -14,14 +14,21 @@ export default function App() {
   const [apiKey, setApiKey] = useState('changeme')
   const [results, setResults] = useState<Series[]>([])
   const [following, setFollowing] = useState<Series[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   async function doSearch() {
+    setError(null)
     if (q.trim().length < 2) return
-    const r = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}&source=all`, {
-      headers: { 'x-api-key': apiKey }
-    })
-    const data = await r.json()
-    setResults(data)
+    try {
+      const r = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}&source=all`, {
+        headers: { 'x-api-key': apiKey }
+      })
+      if (!r.ok) throw new Error('Search failed')
+      const data = await r.json()
+      setResults(data)
+    } catch (e: any) {
+      setError(e.message)
+    }
   }
 
   async function addFollow(s: Series) {
@@ -41,31 +48,32 @@ export default function App() {
   useEffect(() => { loadFollowing() }, [])
 
   return (
-    <div style={{ padding: 20, minHeight: '100vh' }}>
-      <h1 style={{ fontSize: 28, fontWeight: 800 }}>Manhuaseerr</h1>
-      <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-        <input value={apiKey} onChange={e=>setApiKey(e.target.value)} placeholder="API Key" style={{ width: 200, padding: 8, borderRadius: 8 }}/>
+    <div className="app">
+      <header>Manhuaseerr</header>
+      <div className="search">
+        <input value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="API Key" className="input" style={{ width: 200 }} />
         <input
           value={q}
-          onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && doSearch()}
+          onChange={e => setQ(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && doSearch()}
           placeholder="Search Comick..."
-          style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: '#0b1220', color: 'white' }}
+          className="input"
         />
-        <button onClick={doSearch} style={{ padding: '10px 16px', borderRadius: 8, background: '#4f46e5', color: 'white', border: 'none' }}>Search</button>
+        <button onClick={doSearch} className="button">Search</button>
       </div>
+      {error && <div className="error">{error}</div>}
 
       {results.length > 0 && (
         <>
           <h2 style={{ marginTop: 24, fontSize: 22, fontWeight: 700 }}>Search Results</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginTop: 8 }}>
+          <div className="grid">
             {results.map((s) => (
-              <div key={`${s.source}-${s.id}`} style={{ background: '#111827', borderRadius: 12, overflow: 'hidden', border: '1px solid #374151' }}>
-                <img src={s.cover || 'https://placehold.co/300x450'} style={{ width: '100%', height: 260, objectFit: 'cover' }} />
+              <div key={`${s.source}-${s.id}`} className="card">
+                <img src={s.cover || 'https://placehold.co/300x450'} />
                 <div style={{ padding: 12 }}>
                   <div style={{ fontWeight: 700 }}>{s.title}</div>
                   <div style={{ opacity: 0.7, fontSize: 12 }}>{s.source}</div>
-                  <button onClick={() => addFollow(s)} style={{ marginTop: 8, width: '100%', padding: '8px 10px', borderRadius: 8, background: '#16a34a', color: 'white', border: 'none' }}>Follow</button>
+                  <button onClick={() => addFollow(s)} className="follow-btn">Follow</button>
                 </div>
               </div>
             ))}
@@ -74,10 +82,10 @@ export default function App() {
       )}
 
       <h2 style={{ marginTop: 24, fontSize: 22, fontWeight: 700 }}>Following</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16, marginTop: 8 }}>
+      <div className="grid">
         {following.map((s) => (
-          <div key={`${s.source}-${s.id}`} style={{ background: '#111827', borderRadius: 12, overflow: 'hidden', border: '1px solid #374151' }}>
-            <img src={s.cover || 'https://placehold.co/300x450'} style={{ width: '100%', height: 260, objectFit: 'cover' }} />
+          <div key={`${s.source}-${s.id}`} className="card">
+            <img src={s.cover || 'https://placehold.co/300x450'} />
             <div style={{ padding: 12 }}>
               <div style={{ fontWeight: 700 }}>{s.title}</div>
               <div style={{ opacity: 0.7, fontSize: 12 }}>{s.source}</div>
