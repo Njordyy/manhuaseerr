@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: ghcr.io/manhuaseerr/api:latest
+    image: "ghcr.io/Njordyy/manhuaseerr-api:main"
     pull_policy: always
     environment:
       TZ: UTC
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ghcr.io/manhuaseerr/web:latest
+    image: "ghcr.io/Njordyy/manhuaseerr-web:main"
     pull_policy: always
     environment:
       VITE_API_BASE: http://localhost:8000
