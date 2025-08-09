@@ -16,7 +16,8 @@ services:
     restart: unless-stopped
 
   api:
-    build: ./api
+    image: ghcr.io/manhuaseerr/api:latest
+    pull_policy: always
     environment:
       - TZ=UTC
       - DATABASE_URL=postgresql+psycopg2://manhua:manhua_pass@db:5432/manhuadb
@@ -30,13 +31,14 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./downloads:/downloads
+      - downloads_data:/downloads
     ports:
       - "8000:8000"
     restart: unless-stopped
 
   web:
-    build: ./web
+    image: ghcr.io/manhuaseerr/web:latest
+    pull_policy: always
     environment:
       - VITE_API_BASE=http://localhost:8000
     ports:
@@ -47,3 +49,4 @@ services:
 
 volumes:
   db_data:
+  downloads_data:
