@@ -9,13 +9,13 @@
 ```bash
 docker compose up -d --build
 ```
-Open http://localhost:8085 (set API key input to match API_KEY env).
+Open http://localhost:8085 (set API key input to match API_KEY env). Downloads are persisted in a named volume (`downloads_data`).
 
 ## ENV
 - DATABASE_URL=postgresql+psycopg2://manhua:manhua_pass@db:5432/manhuadb
 - API_KEY=changeme (set to strong secret in prod)
 - JOB_INTERVAL_MINUTES=60
-- DOWNLOAD_DIR=/downloads
+- DOWNLOAD_DIR=/downloads (mounted from `downloads_data` volume)
 - COMICK_API_ENABLED=true
 - JOBS_ENABLED=true (toggle background scheduler)
 
