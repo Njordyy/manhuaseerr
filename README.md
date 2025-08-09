@@ -7,14 +7,8 @@
 - API and web images pulled from GitHub Container Registry
 
 ## Run
-```bash
-docker compose up -d
-```
 
-Both API (`ghcr.io/manhuaseerr/api:latest`) and web (`ghcr.io/manhuaseerr/web:latest`) services pull prebuilt images from GitHub Container Registry. Open http://localhost:8085 (set API key input to match API_KEY env). Downloads are persisted in a named volume (`downloads_data`).
-
-Open http://localhost:8085 (set API key input to match API_KEY env). Downloads are persisted in a named volume (`downloads_data`).
-
+ main
 
 ## ENV
 - DATABASE_URL=postgresql+psycopg2://manhua:manhua_pass@db:5432/manhuadb
