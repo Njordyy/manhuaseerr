@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: manhua
       POSTGRES_PASSWORD: manhua_pass
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./db_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U manhua -d manhuadb"]
       interval: 5s
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: "ghcr.io/Njordyy/manhuaseerr-api:main"
+    image: "ghcr.io/njordyy/manhuaseerr-api:main"
     pull_policy: always
     environment:
       TZ: UTC
@@ -31,18 +31,19 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - downloads_data:/downloads
+      - ./downloads_data:/downloads
     ports:
-      - "8000:8000"
+      - "31201:8000"
     restart: unless-stopped
 
   web:
-    image: "ghcr.io/Njordyy/manhuaseerr-web:main"
+    image: "ghcr.io/njordyy/manhuaseerr-web:main"
     pull_policy: always
     environment:
       VITE_API_BASE: "http://api:8000"
+
     ports:
-      - "8085:80"
+      - "31202:80"
     depends_on:
       - api
     restart: unless-stopped
