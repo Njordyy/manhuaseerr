@@ -45,7 +45,7 @@ class ComickClient:
                         return [{
                             "id": str(c.get("hid") or c.get("id") or c.get("chapter")),
                             "num": str(c.get("chap", c.get("chapter", "0"))),
-                            "title": c.get("title") or f"Chapter {c.get('chap', '0')}"
+                            "title": c.get("title") or f"Chapter {c.get('chap', c.get('chapter', '0'))}"
                         } for c in arr]
             except Exception:
                 continue

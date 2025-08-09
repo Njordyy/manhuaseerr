@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+node_modules/
+web/node_modules/
+web/dist/
+web/.vite/
+web/.next/
+.idea/
+.vscode/
+.DS_Store
