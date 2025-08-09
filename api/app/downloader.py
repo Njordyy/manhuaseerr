@@ -8,7 +8,18 @@ from typing import List, Dict
 # TODO: Replace with real image fetch logic for Comick chapters.
 
 def download_chapters(download_dir: Path, series_key: str, chapters: List[Dict]):
-    series_dir = download_dir / series_key
+    """Create placeholder CBZ files for the requested chapters.
+
+    A series key might originate from user input or an external API.  To avoid
+    path traversal, only the final path segment is used when constructing the
+    directory for the series.
+    """
+
+    base_dir = download_dir.resolve()
+    series_dir = (base_dir / Path(series_key).name).resolve()
+    if not series_dir.is_relative_to(base_dir):
+        raise ValueError("Invalid series key")
+
     series_dir.mkdir(parents=True, exist_ok=True)
     created = []
     for c in chapters:
