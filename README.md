@@ -4,13 +4,13 @@
 - APScheduler background job to refresh/download followed series hourly
 - Structured logs (Loguru)
 - Docker Compose stack (db/api/web)
-- API and web images pulled from GitHub Container Registry (override via `API_IMAGE`/`WEB_IMAGE`)
+- API and web images pulled from GitHub Container Registry
 
 ## Run
 ```bash
 docker compose up -d
 ```
-Compose defaults to `ghcr.io/manhuaseerr/api:latest` and `ghcr.io/manhuaseerr/web:latest` but honors `API_IMAGE` and `WEB_IMAGE` environment variables so you can point to images in your own repository. Authenticate to private GitHub packages with:
+Compose pulls `ghcr.io/Njordyy/manhuaseerr-api:main` and `ghcr.io/Njordyy/manhuaseerr-web:main`. Authenticate to private GitHub packages with:
 
 ```bash
 docker login ghcr.io -u <user> -p <token>
