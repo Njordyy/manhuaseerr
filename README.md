@@ -1,4 +1,4 @@
-# Manhuaseerr v0.2 (Prod-leaning MVP)
+# ManhuaSeer v0.2 (Prod-leaning MVP)
 - Postgres + Alembic
 - API key auth (header: `x-api-key`)
 - APScheduler background job to refresh/download followed series hourly
@@ -17,6 +17,7 @@ Open http://localhost:8085 (set API key input to match API_KEY env).
 - JOB_INTERVAL_MINUTES=60
 - DOWNLOAD_DIR=/downloads
 - COMICK_API_ENABLED=true
+- JOBS_ENABLED=true (toggle background scheduler)
 
 ## Migrations
 Alembic is auto-applied via SQLAlchemy metadata in this cut; extend for real migration flows.
